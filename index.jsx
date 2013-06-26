@@ -1,0 +1,1 @@
+﻿// Use CommonJSX for module loading:$.evalFile(new File('~/Documents/Hacker-School/layer-slice/common.jsx'));var layerSlice = require('layer-slice');layerSlice(function(err){  if (err) return console.log('Error:' + err);  console.log('Success!');});
