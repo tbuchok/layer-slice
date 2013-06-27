@@ -23,6 +23,13 @@ var setVisibility = function(layers, visibility) {
   _.forEach(layers, function(l) { l.visible = visibility; });
 };
 
+var mergeLayerSets = function(layerSets) {
+  _.forEach(layerSets, function(layerSet, index, array) {
+    var artLayer = layerSet.merge();
+    artLayer.copy(true); // `true` includes all visible layers inside group
+  });
+}
+
 var findVisibleLayers = function(layers) {
   var visibleLayers = [];
   _.forEach(layers, function(layer, i, array) {
@@ -60,6 +67,9 @@ var exportLayers = function(layers, document) {
     document.selection.copy();
     var tempWidth = getLayerWidth(layer.bounds);
     var tempHeight = getLayerHeight(layer.bounds);
+    console.log('layer.name: ' + layer.name);
+    console.log('layer.width: ' + tempWidth);
+    console.log('layer.height: ' + tempHeight);
     var temp = app.documents.add(tempWidth, tempHeight, null, null, null, DocumentFill.TRANSPARENT);
     temp.paste();
     temp.exportDocument(file, ExportType.SAVEFORWEB, exportOptions); 
@@ -71,11 +81,20 @@ var exportLayers = function(layers, document) {
 
 var layerSlice = function(callback) {
   var document = app.activeDocument
-    , visibleLayers = findVisibleLayers(document.layers);
+    , originalDocumentFilePath = document.fullName
+    , visibleLayers;
 
+  document.rasterizeAllLayers();
+
+  mergeLayerSets(document.layerSets);
+
+  visibleLayers = findVisibleLayers(document.layers);
   setVisibility(visibleLayers, false);
   exportLayers(visibleLayers, document);
   setVisibility(visibleLayers, true);
+
+  document.close(SaveOptions.DONOTSAVECHANGES);
+  app.open(new File(originalDocumentFilePath));
  
   callback();
 };
