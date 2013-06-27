@@ -1,4 +1,4 @@
-var _ = require('utils');
+var _ = require('./lib/utils');
 
 var setForm = function(extension) {
   switch (extension) {

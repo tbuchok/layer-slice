@@ -40,10 +40,13 @@
     return exports;
   };
 
+  // JSON support
+  $.evalFile('~/Documents/Hacker-School/layer-slice/json2.js');
+
   // Export #require
   global.require = require; 
 
   // Export "stdlib" functions:
-  global.console = require('console');
+  global.console = require('./console');
 
 }(this));
