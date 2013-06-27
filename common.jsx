@@ -12,7 +12,6 @@
   }
 
   var findModuleInPath = function(pathAndModuleName) {
-    console.log(pathAndModuleName);
     var file;
     for (var i = 0; i < FILE_TYPES.length; i++) {
       file = new File(pathAndModuleName + FILE_TYPES[i]);
