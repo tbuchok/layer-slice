@@ -1,20 +1,49 @@
-var require = function(moduleName) {
-  var module = { exports : {} }
-    , exports = module.exports
-    , path = '~/Documents/Hacker-School/layer-slice/lib/'
-    , fileTypes = [ '.jsx', '.js', '.json' ]
-    , i = 0;
-  
-  for (; i < fileTypes.length; i++) {
-    var m = new File(path + moduleName + fileTypes[i]);
-    if (m.exists) break;
-  }
-  
-  if (i === fileTypes.length - 1) 
-    throw new Error('Cannot find module ' + moduleName + ' in /lib.');
-  
-  $.evalFile(new File(path + moduleName + fileTypes[i]));
-  return exports;
-};
+;(function(global) {
 
-var console = require('console');
+  var LOCAL_PATHS = ['node_modules']
+    , FILE_TYPES = [ '.jsx', '.js', '.json' ];
+
+  var findModule = function(moduleName) {
+    var PATHS = ['~/Documents/Hacker-School/layer-slice/node_modules/'];
+    var file;
+    for (var i = 0; i < PATHS.length; i++) {
+      file = findModuleInPath(PATHS[i] + moduleName); 
+      if (file.exists) break;
+    }
+    return file;
+  }
+
+  var findModuleInPath = function(pathAndModuleName) {
+    var file;
+    for (var i = 0; i < FILE_TYPES.length; i++) {
+      file = new File(pathAndModuleName + FILE_TYPES[i]);
+      if (file.exists) break;
+    }
+    return (file.exists) ? file : null;
+  }
+
+  var require = function(moduleName) {
+    var module = { exports : {} }
+      , exports = module.exports
+      , path = '~/Documents/Hacker-School/layer-slice/'
+      , file;
+
+    if (/^\./.test(moduleName)) {
+      file = findModuleInPath(path + moduleName);
+    } else {
+      file = findModule(moduleName);
+    }
+    
+    if (!file) { throw new Error('Cannot find ' + moduleName); };
+    
+    $.evalFile(file);
+    return exports;
+  };
+
+  // Export #require
+  global.require = require; 
+
+  // Export "stdlib" functions:
+  global.console = require('console');
+
+}(this));

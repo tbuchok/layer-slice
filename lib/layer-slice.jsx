@@ -1,4 +1,4 @@
-var _ = require('underscore');
+var _ = require('utils');
 
 var setForm = function(extension) {
   switch (extension) {
@@ -62,7 +62,6 @@ var exportLayers = function(layers, document) {
     var tempHeight = getLayerHeight(layer.bounds);
     var temp = app.documents.add(tempWidth, tempHeight, null, null, null, DocumentFill.TRANSPARENT);
     temp.paste();
-    // http://www.damienvanholten.com/blog/export-groups-to-files-photoshop/
     temp.exportDocument(file, ExportType.SAVEFORWEB, exportOptions); 
     temp.close(SaveOptions.DONOTSAVECHANGES);
     document.selection.deselect();
