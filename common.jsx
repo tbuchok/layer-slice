@@ -41,12 +41,12 @@
   };
 
   // JSON support
-  $.evalFile('~/Documents/Hacker-School/layer-slice/json2.js');
+  $.evalFile('~/Documents/Hacker-School/layer-slice/stdlib/json2.js');
 
   // Export #require
   global.require = require; 
 
   // Export "stdlib" functions:
-  global.console = require('./console');
+  global.console = require('./stdlib/console');
 
 }(this));
