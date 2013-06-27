@@ -67,9 +67,6 @@ var exportLayers = function(layers, document) {
     document.selection.copy();
     var tempWidth = getLayerWidth(layer.bounds);
     var tempHeight = getLayerHeight(layer.bounds);
-    console.log('layer.name: ' + layer.name);
-    console.log('layer.width: ' + tempWidth);
-    console.log('layer.height: ' + tempHeight);
     var temp = app.documents.add(tempWidth, tempHeight, null, null, null, DocumentFill.TRANSPARENT);
     temp.paste();
     temp.exportDocument(file, ExportType.SAVEFORWEB, exportOptions); 
@@ -84,7 +81,9 @@ var layerSlice = function(callback) {
     , originalDocumentFilePath = document.fullName
     , visibleLayers;
 
-  document.rasterizeAllLayers();
+  try {
+    document.rasterizeAllLayers();
+  } catch(e) { /* DO NOTHING */ }
 
   mergeLayerSets(document.layerSets);
 
