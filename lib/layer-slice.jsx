@@ -1,4 +1,4 @@
-var _ = require('./lib/utils');
+var _ = require('underscore');
 
 var setForm = function(extension) {
   switch (extension) {
